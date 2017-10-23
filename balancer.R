@@ -1,5 +1,6 @@
 library(forecast)
 library(Rcpp)
+library(parallel)
 
 sourceCpp("balancer.cpp")
 
@@ -14,8 +15,8 @@ optimize_dual_cost <- function(x, model, holding, penalty, horizon) {
 
 set.seed(1)
 
-n_periods <- 150
-n_samples <- 50
+n_periods <- 950
+n_samples <- 100
 n_burn_in <- 10
 demand <- cumsum(rnorm(n=n_periods, mean=.1, sd=1)) + 100
 holding <- rep(.5, n_periods)
