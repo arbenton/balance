@@ -31,14 +31,33 @@ double compute_penalty(double quantity, double inventory, V demand, V penalty) {
 }
 
 template <typename V>
+double compute_ordering(double quantity, V ordering) {
+  return quantity > 0 ? ordering[0] : 0;
+}
+
+template <typename V>
 double pr_cost(double quantity, double inventory, V demand, V holding, V penalty) {
   double holding_cost = compute_holding(quantity, inventory, demand, holding);
   double penalty_cost = compute_penalty(quantity, inventory, demand, penalty);
-  if (holding_cost > penalty_cost)
-    return holding_cost;
-  else
-    return penalty_cost;
+  return std::max(holding_cost, penalty_cost);
+}
+
+template <typename V>
+V pr_cost(V quantity, double inventory, V demand, V holding, V penalty) {
+  V cost(quantity.size());
+  for (int q = 0; q < quantity.size(); q++) {
+    cost[q] = pr_cost(quantity[q], inventory, demand, holding, penalty);
+  }
+  return cost;
+}
+
+template <typename V>
+double ls_cost(double quantity, double inventory, V demand, V holding, V penalty, V ordering) {
+  double ordering_cost = compute_ordering(quantity, ordering);
+  double dual_cost = pr_cost<V>(quantity, inventory, demand, holding, penalty);
+  return std::max(ordering_cost, dual_cost);
 }
 
 }
+
 #endif//BALANCE_HPP

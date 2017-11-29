@@ -1,0 +1,33 @@
+\documentclass[12pt]{report}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Indicator}{\mathds{1}}
+\newcommand{\EX}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+
+\begin{document}
+
+Computing $l_s^B(q_s)$ in the general case requires the computation of a $T - s$ dimensional integral. Traditional quadrature algorithms have exponential complexity in dimensions, making such an integral unreasonable to compute. However, some conditions allow it to be reduced to $T-s$ integrals of fewer dimensions. Letting $\Phi$ be the (generally multivariate) distribution of forecast $f_s$: 
+\begin{alignat*}{1}
+	l_s^B(q_s) &= \EX [H_s^B(q_s) \; | \; f_s] \\
+        &= \EX \bigg\{\sum_{j=s}^T h_j\bigg[q_s - \bigg(\sum_{i=s}^j u_i - X_s\bigg)^+\bigg]^+  \; | \; f_s \bigg\} \\
+		&= \int_{u_s=0}^{\infty} \int_{u_{(s+1)}=0}^{\infty}\dots \int_{u_T=0}^{\infty}\sum_{j=s}^T h_j\bigg[q_s - \bigg(\sum_{i=s}^j u_i - X_s\bigg)^+\bigg]^+ d\Phi(u_s, u_{s+1}, \dots u_T)\\
+	   &= \sum_{j=s}^T \int_{u_s=0}^{\infty} \int_{u_{(s+1)}=0}^{\infty}\dots \int_{u_j=0}^{\infty} h_j\bigg[q_s - \bigg(\sum_{i=s}^j u_i - X_s\bigg)^+\bigg]^+ d\Phi(u_s, u_{s+1}, \dots u_T)
+\end{alignat*}
+If the conditions allow for $D_{[s, j]} = \sum_{i=s}^j D_s$ to be expressed as a single variate distribution $\Phi_{[s, j]}$, then $l_s^B(q_s)$ can be expressed as $T - s$ integrals in one dimension:
+\begin{equation}
+	l_s^B(q_s) = \sum_{j=s}^T \int_{u_j=X_s}^{X_s + q_s} h_j\bigg(q_s + X_s - u_j \bigg) d\Phi_{[s, j]}(u_j)
+\end{equation}
+Under the same conditions, $\frac{d}{d q_s} l_s^B(q_s)$ can be expressed:
+\begin{equation}
+	\frac{d}{d q_s} l_s^B(q_s) =  \sum_{j=s}^T h_j (\Phi_{[s, j]}(X_s + q_s) - \Phi_{[s, j]}(X_s))
+\end{equation}
+This condition would hold for a series of independent random variables. 
+
+\end{document}

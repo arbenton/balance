@@ -1,0 +1,70 @@
+% vim:ft=tex:
+%
+\documentclass{beamer}
+\usetheme{Madrid}
+\usepackage[latin1]{inputenc}
+\usefonttheme{professionalfonts}
+\usepackage{times}
+\setbeamersize{text margin left=1em,text margin right=1em}
+\setbeamertemplate{itemize items}[default]
+\setbeamertemplate{enumerate items}[default]
+\usepackage[utf8]{inputenc}
+
+\title{Approximation Algorithms for Stochastic Inventory Control Models \\
+    Levi, et. al
+}
+\author{Andrew Benton}
+\date{\today}
+\begin{document}
+
+\begin{frame}[plain]
+\maketitle
+\end{frame}
+
+\begin{frame}{Main Results}{}
+    \begin{itemize}
+    \item Studies problems with the following properties:
+        \begin{itemize} 
+            \item single item
+            \item finite horizon
+            \item correlated and nonstationary demand
+        \end{itemize}
+    \item Introduces ideas which allow MDP's to be avoided.
+        \begin{itemize}
+            \item \textit{Marginal Cost Accounting}
+            \item \textit{Cost Balancing}
+        \end{itemize}
+    \item Guarantees constant worst-case performance policies for: 
+        \begin{itemize}
+            \item Periodic Review Stochastic Inventory Control Problem
+            \item Stochastic Lot-Sizing Problem 
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{New Ideas Introduced}{Marginal Cost Accounting}
+    \begin{itemize}
+        \item Costs in the Markov Decision Process: 
+            \begin{itemize}
+                \item \textbf{Current Costs}: a function of current demand and current order.
+                \item \textbf{Future Costs}: a function of future demand and future orders.
+            \end{itemize}
+        \item Costs in the Marginal Cost Accounting:
+            \begin{itemize}
+                \item \textbf{Current Costs}: a function of current demand and current order.
+                \item \textbf{Future Costs}: a function of future demand.
+            \end{itemize}
+        \item The overall holding costs of ordered units over full horizon are due to the current decision.
+        \item Once an order is made, those unit's holding costs are independent of any future decision.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{New Ideas Introduced}{Cost Balancing}
+    \begin{itemize}
+        \item Any policy incurs costs due to overordering and underordering.
+        \item An effective policy can balance these costs.
+        \item Balancing leads to constant expected worst-case performance. 
+    \end{itemize}
+\end{frame}
+
+\end{document}
