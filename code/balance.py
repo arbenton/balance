@@ -29,14 +29,14 @@ def der_holding_loss(q, x, d_mean, d_std, h_cost, tol=1e-6):
         der_holding += h_cost*held
     return der_holding
 
-def dual_root(q, x, d_mean, d_std, h, p):
+def sicp_root(q, x, d_mean, d_std, h, p):
     return holding_loss(q, x, d_mean, d_std, h) \
         - backorder_loss(q, x, d_mean, d_std, p)
 
-def dual_root_der(q, x, d_mean, d_std, h, p):
+def sicp_root_der(q, x, d_mean, d_std, h, p):
     return der_holding_loss(q, x, d_mean, d_std, h) \
         + der_backorder_loss(q, x, d_mean, d_std, p)
 
-def dual_max(q, x, d_mean, d_std, h, p):
+def sicp_max(q, x, d_mean, d_std, h, p):
     return max(holding_loss(q, x, d_mean, d_std, h),
                backorder_loss(q, x, d_mean, d_std, p))

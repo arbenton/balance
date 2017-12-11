@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: report.aux
+The style file: plainnat.bst
+Database file #1: citations.bib
+Warning--I didn't find a database entry for "levi07"
+Warning--empty institution in hurley:2007
+You've used 3 entries,
+            2773 wiz_defined-function locations,
+            614 strings with 5458 characters,
+and the built_in function-call counts, 1663 in all, are:
+= -- 140
+> -- 126
+< -- 0
++ -- 42
+- -- 39
+* -- 161
+:= -- 273
+add.period$ -- 11
+call.type$ -- 3
+change.case$ -- 23
+chr.to.int$ -- 3
+cite$ -- 7
+duplicate$ -- 58
+empty$ -- 109
+format.name$ -- 42
+if$ -- 331
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 2
+newline$ -- 25
+num.names$ -- 12
+pop$ -- 36
+preamble$ -- 1
+purify$ -- 19
+quote$ -- 0
+skip$ -- 48
+stack$ -- 0
+substring$ -- 54
+swap$ -- 2
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 33
+warning$ -- 1
+while$ -- 11
+width$ -- 0
+write$ -- 49
+(There were 2 warnings)
