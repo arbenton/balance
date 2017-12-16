@@ -1,9 +1,23 @@
-\begin{thebibliography}{3}
+\begin{thebibliography}{7}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[{Arbenz} et~al.(2011){Arbenz}, {Embrechts}, and
+  {Puccetti}]{arbenz:2011}
+P.~{Arbenz}, P.~{Embrechts}, and G.~{Puccetti}.
+\newblock {The AEP algorithm for the fast computation of the distribution of
+  the sum of dependent random variables}.
+\newblock \emph{ArXiv e-prints}, June 2011.
+
+\bibitem[Evans and Leemis(2004)]{evans:2004}
+Diane~L Evans and Lawrence~M Leemis.
+\newblock Algorithms for computing the distributions of sums of discrete random
+  variables.
+\newblock \emph{Mathematical and Computer Modelling}, 40\penalty0
+  (13):\penalty0 1429--1452, 2004.
 
 \bibitem[Hurley et~al.(2007)Hurley, Jackson, Levi, Roundy, and
   Shmoys]{hurley:2007}
@@ -26,5 +40,18 @@ Retsef Levi, Robin~O. Roundy, David~B. Shmoys, and Van~Anh Truong.
 \newblock \emph{Operations Research}, 56\penalty0 (5):\penalty0 1184--1199,
   2008.
 \newblock \doi{10.1287/opre.1080.0580}.
+
+\bibitem[Levi et~al.(2016)Levi, Roundy, Truong, and Wang]{levi:2016}
+Retsef Levi, Robin Roundy, Van~Anh Truong, and Xinshang Wang.
+\newblock Provably near-optimal balancing policies for multi-echelon stochastic
+  inventory control models.
+\newblock \emph{Mathematics of Operations Research}, 42\penalty0 (1):\penalty0
+  256--276, 2016.
+
+\bibitem[Yu(2010)]{yu:2010}
+Qian Yu.
+\newblock \emph{Evaluation of cost balancing policies in multi-echelon
+  stochastic inventory control problems}.
+\newblock PhD thesis, Massachusetts Institute of Technology, 2010.
 
 \end{thebibliography}
