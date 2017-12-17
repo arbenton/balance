@@ -27,17 +27,47 @@ A procedure to compute the balancing policy parameters exactly for independent a
 
 \cite{levi:2007}, \cite{levi:2008} develop and advance the idea of \textit{Marginal Cost Accounting} and \textit{Cost Balancing}. Marginal Cost Accounting is a method where the total discounted cost of the current decision is computed and minimized. Although similar in effect as a \textit{Dynamic Programming} approach, it differs in that the future costs are separated into their components (holding, backorder, etc), and can be computed for one period without requiring the entire horizon to be solved. Cost Balancing allows for an efficient method of solving the resulting equations, and provides bounds of performance. \cite{hurley:2007} applies these models and shows that these bounds are strong.
 
-\section{Stochastic Inventory Models}
+\section{Constant Bounded Approximation Algorithms}
+
+\subsection{Key Ideas}
+
+\subsubsection{Marginal Cost Accounting}
+
+A cost accounting scheme assigns costs to particular decisions. A marginal cost accounting scheme is one which after a particular decision is made, that cost can be considered to be unalterable by later decisions. Like a myopic policy, marginal cost accounting schemes give us the ability to select optimal decisions in a particular period without any knowledge of later decisions. Unlike a myopic policy, the costs of the decision in future periods are still considered in the current decision. \\
+\\
+As an example, we consider holding costs. Holding costs have the property that once an order is placed, the holding costs for the particular items purchased will be incurred until they are consumed by demand. Let $h_j$ be the per unit holding cost in period $j$, $D_{[t,j]}$ be the cumulative demand from period $t$ to $j$, and $X_t$ be the inventory in period $t$. The holding costs incurred by an order of size $Q_t$ in period $t$ are:
+$$
+	\sum_{j=t}^T h_j (Q_t - (D_{[t,j]} - X_t)^+)^+
+$$
+Note that this equation does not account for any future decisions, allowing the holding costs to be computed for any demand outcome. This allows the expected holding costs to be computed, provided a distribution over future demands.
+
+\subsubsection{Cost Balancing}
+
+Cost balancing is the component of the algorithm which provides us with bounded cost guarantees. \cite{levi:2007} provide a detailed proof which the later papers are built upon - only a summary will be offered here. They let $Z_t = \EX[H_t^B \; | \; F_t] = \EX[\Pi_t^B \; | \; F_t]$. They then establish the following equivalency with the total cost of the balancing policy:
+$$
+	\EX[\mathcal{C}(B)] = 2 \sum_t \EX[Z_t]
+$$ 
+They then partition the horizon into two sets, $\mathcal{J}_H$ and $\mathcal{J}_{\Pi}$, where inventory held is above and below optimal respectively. Using this partition, they establish that:
+$$
+	H^{opt} + \Pi^{opt} \geq \sum_{t \in \mathcal{J}_H} H_t^B + \sum_{t \in \mathcal{J}_{\Pi}} \Pi_t^B
+$$
+With these relationships established, it can be shown that $\EX[\mathcal{C}(opt)] \leq \sum_t \EX[Z_t]$ and therefore:
+$$
+	\EX[\mathcal{C}(B)] \leq 2 \EX[\mathcal{C}(opt)]
+$$
+Note that this provides no guarantees about average performance, just worst case performance. \cite{hurley:2007} show that average performance is typically superior to twice of optimal, and also provide a set of heuristics for upper and lower bounds for ordering quantity which improve average performance while not violating the constant worst case guarantee. 
+
+\subsection{Applied Models}
 
 \cite{levi:2007} present algorithms for the stochastic inventory control problem and the lot sizing problem. \cite{levi:2008} present algorithms for the capacitated stochastic inventory control problem. \cite{levi:2016} present algorithms for the multi-echelon inventory control problem. For all of these, they present an algorithm as well as worst case performance guarantees. 
 
 \subsection{Stochastic Inventory Problem}
 
-This problem has per unit holding costs $h_s$ and per unit lost sales costs $p_s$. Marginal cost accounting attributes some portion of the future costs directly to the decision made in the current period. Given the demand sequence $\{z_t\}_t$, a starting inventory $X_t$, the period $s$ holding costs $H^B_s(q_s)$ are computed from the current period to the end of the horizon. 
+This problem has per unit holding costs $h_s$ and per unit lost sales costs $p_s$. Given the demand sequence $\{z_t\}_t$, a starting inventory $X_t$, the period $s$ holding costs $H^B_s(q_s)$ are computed from the current period to the end of the horizon. 
 $$
 	H_s^B(q_s) = \sum_{j=s}^T h_j \big[q_s - \big(\sum_{i=s}^j z_i - X_s\big)^+\big]^+
 $$
-The penalty costs $\Pi_s^B(q_s)$ are simplified by the observation that if too few items are bought during the current period, more can be purchased. Due to this, penalty costs only need to be computed for a single period.
+The penalty costs $\Pi_s^B(q_s)$ are simplified by the observation that if too few items are bought during the current period, more can be purchased next period. Due to this, penalty costs only need to be computed for a single period.
 $$
 	\Pi_s^B(q_s) =  p_s [z_s - (X_s^B + q_s)]^+ 
 $$
@@ -45,24 +75,26 @@ Using these equations, the Balancing Algorithm seeks the order size $q_s$ where 
 $$
 	l_s^B(q_s) = \pi_s^B(q_s)
 $$
-where $l_s^B(q_s) = \EX[H_s^B(q_s) \; | f_s]$ and $\pi_s^B(q_s) = \EX[\Pi_s^B(q_s) \; | f_s]$. \cite{levi:2007} show that when this $q_s$ is applied, the incurred costs are guaranteed to be twice of the optimal costs. \cite{hurley:2007} show that these bounds are tight.
+where $l_s^B(q_s) = \EX[H_s^B(q_s) \; | f_s]$ and $\pi_s^B(q_s) = \EX[\Pi_s^B(q_s) \; | f_s]$. \cite{levi:2007} show that when this $q_s$ is applied, the incurred costs are guaranteed to be twice of the optimal costs.
 
 \subsection{Lot Sizing Problem}
 
 This problem has per unit holding costs $h_s$, per unit lost sales costs $p_s$, and a per order fixed cost $K$. The approach taken by Levi et al. (2007) seeks to separately balance the holding costs and ordering costs as well as the penalty costs and ordering costs. Here, the Balancing Algorithm provides two parameters: the inventory level at which to order, and the level to order up to (analagous to (s, S) in the exact formulation of this problem). An order is made if the backordering costs exceed $K$:
 $$
-	q_s^B = \min_{q} \{q \; : \; \pi_s^B(q_s) \leq K\} 
+	r_s^B = \min_{q} \{q \; : \; \pi_s^B(q_s) \leq K\} 
 $$
 The order size is then:
 $$
 	q_s^B = \max_{q_s} \{q \; : \; l_s^B(q_s) \leq K\} 
 $$
-\cite{levi:2007} show that when this policy is applied, the incurred costs are guaranteed to be three times of the optimal costs.  
+\cite{levi:2007} show that when this policy is applied, the incurred costs are guaranteed to be three times of the optimal costs. Unfortunately, these bounds assume that the current period's demand is known deterministically. While this is true in some cases, it does limit the applicability.
 
 \subsection{Capacitated Stochastic Inventory Problem}
 
-This problem has per unit holding costs $h_s$, per unit lost sales costs $p_s$, and a maximum order size $Q_s$. This problem is effectively a generalization of the uncapacitated stochastic inventory problem, and the balancing algorithm treats it as such. 
-[TODO: type up the equations]
+This problem has per unit holding costs $h_s$, per unit lost sales costs $p_s$, and a maximum order size $u_s$. This problem is effectively a generalization of the uncapacitated stochastic inventory problem, and the balancing algorithm treats it as such. The holding costs are computed the same, but the penalties must now be computed over the whole horizon:
+$$
+	\tilde{\Pi} = \sum_{j=s}^T 
+$$
 
 \section{Methods for Computing Balancing Policies}
 
@@ -132,11 +164,7 @@ $$
 $$
 	f_s^{\prime}(x) =  \frac{d}{dx} l_s^B(x) - \frac{d}{dx} \pi_s^B(x) 
 $$
-where the formulae for $ \frac{d}{d q_s} l_s^B(q_s^B)$ and $ \frac{d}{d q_s} \pi_s^B(q_s^B)$ can be found in equations (2) and (4). The only remaining concern when applying Newton-Raphson is the initial estimate $x_0$. Generally, poor initial estimates can cause subquadratic convergence. These concerns can be ignored with the initial estimate of $x_0 = \mu_s$ (demonstrated numerically in the next section).
-
-\subsubsection{Approximate Solution}
-
-If the conditions above are not met, Monte Carlo simulation is the best method of computing $l_s^B(q_s)$ and $\tilde{\pi}_s^B(q_s)$.
+The only remaining concern when applying Newton-Raphson is the initial estimate $x_0$. Generally, poor initial estimates can cause subquadratic convergence. These concerns can be ignored with the initial estimate of $x_0 = \mu_s$.
 
 \bibliography{citations}
 \bibliographystyle{plainnat}
