@@ -207,7 +207,7 @@ void sicp_h_horizon_root_fdf(double q, void* params, double* y, double* dy) {
   *dy = sicp_h_horizon_root_der(q, params);
 }
 
-double sicp_h_horizon_min(double q, void* params) {
+double sicp_h_horizon_max(double q, void* params) {
   double holding = sicp_horizon_holding(q, params);
   double penalty = sicp_myopic_penalty(q, params);
   return holding > penalty ? holding : penalty;
@@ -218,10 +218,22 @@ double sicp_h_myopic_root(double q, void* params) {
   return sicp_myopic_holding(q, params) - sicp_myopic_penalty(q, params);
 }
 
-double sicp_h_myopic_min(double q, void* params) {
+double sicp_h_myopic_sum(double q, void* params) {
   double holding = sicp_myopic_holding(q, params);
   double penalty = sicp_myopic_penalty(q, params);
-  return holding > penalty ? holding : penalty;
+  return holding + penalty;
+}
+
+double sicp_h_horizon_sum(double q, void* params) {
+  double holding = sicp_horizon_holding(q, params);
+  double penalty = sicp_myopic_penalty(q, params);
+  return holding + penalty;
+}
+
+double sicp_h_horizon_sum_der(double q, void* params) {
+  double holding = sicp_horizon_holding_der(q, params);
+  double penalty = sicp_myopic_penalty_der(q, params);
+  return holding + penalty;
 }
 
 
@@ -248,10 +260,9 @@ double sicp_myopic(double q_lo, double q_hi, sicp_problem* prob) {
   return root;
 }
 
-double sicp_balance(double q_lo, double q_hi, sicp_problem* prob) {
+double sicp_balance(double root, sicp_problem* prob) {
   int status;
   int iter = 0;
-  double root = (q_lo + q_hi)/2;
   gsl_function_fdf FDF;
   FDF.f = &sicp_h_horizon_root;
   FDF.df = &sicp_h_horizon_root_der;
@@ -261,7 +272,7 @@ double sicp_balance(double q_lo, double q_hi, sicp_problem* prob) {
   gsl_root_fdfsolver *s = gsl_root_fdfsolver_alloc (T);
   gsl_root_fdfsolver_set(s, &FDF, root);
   double x0, x;
-  x = (q_lo + q_hi)/2;
+  x = root;
   do {
       iter++;
       status = gsl_root_fdfsolver_iterate (s);
@@ -295,31 +306,28 @@ int main (void) {
   for (int i = 0; i < n; ++i) {
     double d_params[] = {1000, 300};
     double c_params[] = {(i+1)*1000, pow(300*300*(i+1), .5)};
-    periods[i] = *new_sicp_period(-1, 1, 5, d_params, c_params);
+    periods[i] = *new_sicp_period(-1, 1, 1.1, d_params, c_params);
   }
 
   sicp_problem* problem = new_sicp_problem(n, 0, periods);
 
-  printf("q,h,dh,l,dl,f,df\n");
+  printf("q,h,dh,l,dl,f,df,my,s,m\n");
   for (int q = 0; q < 10000; q++) {
-    printf("%4d,%9.6f,%9.6f,%9.6f,%9.6f,%9.6f,%9.6f\n", q,
+    printf("%4d,%9.6f,%9.6f,%9.6f,%9.6f,%9.6f,%9.6f,%9.6f,%9.6f,%9.6f\n", q,
     sicp_horizon_holding(q, problem),
     sicp_horizon_holding_der(q, problem),
     sicp_myopic_penalty(q, problem),
     sicp_myopic_penalty_der(q, problem),
     sicp_h_horizon_root(q, problem),
-    sicp_h_horizon_root_der(q, problem));
+    sicp_h_horizon_root_der(q, problem),
+    sicp_h_myopic_sum(q,problem),
+    sicp_h_horizon_sum(q,problem),
+    sicp_h_horizon_max(q, problem));
   }
-/*
-  clock_t begin = clock();
-  double opt_q;
-  for (int i = 0; i < 1000; i++) {
-    opt_q = sicp_balance(1000, 1300, problem);
-  }
-  clock_t end = clock();
-  double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-  printf("last solution found:  %9.6f\n", opt_q);
-  printf("average milliseconds to compute: %9.6f\n", time_spent*1000/1000);
-*/
+
+
+//  printf("last solution found:  %9.6f\n", opt_q);
+//  printf("average milliseconds to compute: %9.6f\n", time_spent*1000/1000);
+
   return 1;
 }

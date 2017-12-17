@@ -4,45 +4,45 @@ The top-level auxiliary file: report.aux
 The style file: plainnat.bst
 Database file #1: citations.bib
 Warning--empty institution in hurley:2007
-You've used 7 entries,
+You've used 6 entries,
             2773 wiz_defined-function locations,
-            638 strings with 6158 characters,
-and the built_in function-call counts, 3385 in all, are:
-= -- 296
-> -- 226
-< -- 2
-+ -- 76
-- -- 69
-* -- 306
-:= -- 546
-add.period$ -- 23
-call.type$ -- 7
-change.case$ -- 44
-chr.to.int$ -- 7
-cite$ -- 15
-duplicate$ -- 135
-empty$ -- 245
-format.name$ -- 78
-if$ -- 682
+            629 strings with 5971 characters,
+and the built_in function-call counts, 2911 in all, are:
+= -- 250
+> -- 205
+< -- 1
++ -- 69
+- -- 63
+* -- 267
+:= -- 476
+add.period$ -- 20
+call.type$ -- 6
+change.case$ -- 39
+chr.to.int$ -- 6
+cite$ -- 13
+duplicate$ -- 115
+empty$ -- 203
+format.name$ -- 69
+if$ -- 582
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 5
-newline$ -- 45
-num.names$ -- 28
-pop$ -- 74
+missing$ -- 4
+newline$ -- 40
+num.names$ -- 24
+pop$ -- 66
 preamble$ -- 1
-purify$ -- 37
+purify$ -- 33
 quote$ -- 0
-skip$ -- 106
+skip$ -- 90
 stack$ -- 0
-substring$ -- 118
-swap$ -- 7
+substring$ -- 85
+swap$ -- 6
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 77
+type$ -- 66
 warning$ -- 1
-while$ -- 27
+while$ -- 22
 width$ -- 0
-write$ -- 100
+write$ -- 87
 (There was 1 warning)
