@@ -1,1 +1,4 @@
 \beamer@endinputifotherversion {3.36pt}
+\beamer@sectionintoc {1}{Approximation Algorithms for Stochastic Inventory Control}{3}{0}{1}
+\beamer@sectionintoc {2}{Unconstrained Periodic Review}{6}{0}{2}
+\beamer@sectionintoc {3}{Computing Balancing Policies}{9}{0}{3}

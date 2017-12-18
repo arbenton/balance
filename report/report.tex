@@ -21,9 +21,9 @@
 
 \section{Introduction}
 
-The typical approach for stochastic inventory control models are based on Markov Decision Processes, which are solved through dynamic programming. Although this model is flexible, it can often result in uncomputable solutions. Due to this, there exists a large literature of approximation algorithms which are able to compute policies with reasonable efficiency. Unfortunately, understanding the performance of these heuristics can be difficult.\\
+The typical approach for stochastic inventory control models are based on Markov Decision Processes, which are solved through dynamic programming. Although this model is flexible, it can often result in uncomputable solutions. Due to this, there exists a large literature discussing approximation algorithms which are able to compute policies with reasonable efficiency. Unfortunately, understanding the performance of these heuristics can be difficult.\\
 \\ 
-\cite{levi:2007}, \cite{levi:2008} develop and advance the idea of \textit{Marginal Cost Accounting} and \textit{Cost Balancing}. Marginal Cost Accounting gives us a method to efficiently compute the costs incurred by decisions, and thereby avoiding the dynamic programming solution. Cost Balancing allows for an efficient method of solving the resulting equations, and provides bounds on worst case performance. Together, these ideas result in efficient policies with bounded worst case performance. 
+\cite{levi:2007} present the ideas of \textit{Marginal Cost Accounting} and \textit{Cost Balancing}. Marginal Cost Accounting gives us a method to efficiently compute the full horizon costs incurred by decisions, and thereby avoiding the dynamic programming solution. Cost Balancing allows for an efficient method of solving the resulting equations, and provides bounds on worst case performance. Together, these ideas result in efficient approximation algorithms with bounded worst case performance. 
 
 
 \subsection{Marginal Cost Accounting}
@@ -34,7 +34,7 @@ As an example, we consider holding costs. Holding costs have the property that o
 $$
 	\sum_{j=t}^T h_j (Q_t - (D_{[t,j]} - X_t)^+)^+
 $$
-Note that this equation does not account for any future decisions, allowing the holding costs to be computed for any demand outcome. This allows the expected holding costs to be computed, provided a distribution over future demands.
+Note that this equation does not account for any future decisions, allowing the holding costs to be computed for any demand outcome. This allows the expected holding costs to be computed, provided a forecasting distribution over future demands.
 
 \subsection{Cost Balancing}
 
@@ -46,11 +46,11 @@ They then partition the horizon into two sets, $\mathcal{J}_H$ and $\mathcal{J}_
 $$
 	H^{opt} + \Pi^{opt} \geq \sum_{t \in \mathcal{J}_H} H_t^B + \sum_{t \in \mathcal{J}_{\Pi}} \Pi_t^B
 $$
-With these relationships established, it can be shown that $\EX[\mathcal{C}(opt)] \leq \sum_t \EX[Z_t]$ and therefore:
+With these relationships established, it can be shown that $\EX[\mathcal{C}(opt)] \geq \sum_t \EX[Z_t]$ and therefore:
 $$
 	\EX[\mathcal{C}(B)] \leq 2 \EX[\mathcal{C}(opt)]
 $$
-Note that this provides no guarantees about average performance, just worst case performance. \cite{hurley:2007} show that average performance is typically superior to twice of optimal, and also provide a set of heuristics for upper and lower bounds for ordering quantity which improve average performance while not violating the constant worst case guarantee. 
+Note that this provides no guarantees about average performance, just worst case performance. \cite{hurley:2007} show that average performance is typically much better, and also provide a set of heuristics for upper and lower bounds for ordering quantity which improve average performance while not violating the constant worst case guarantee. 
 
 
 \section{Constant Bounded Approximation Algorithms}
@@ -71,9 +71,9 @@ Using these equations, the Balancing Algorithm seeks the order size $q_s$ where 
 $$
 	l_s^B(q_s) = \pi_s^B(q_s)
 $$
-where $l_s^B(q_s) = \EX[H_s^B(q_s) \; | f_s]$ and $\pi_s^B(q_s) = \EX[\Pi_s^B(q_s) \; | f_s]$. \cite{levi:2007} show that when this $q_s$ is applied, the incurred costs are guaranteed to be twice of the optimal costs. \\
+where $l_s^B(q_s) = \EX[H_s^B(q_s) \; | f_s]$ and $\pi_s^B(q_s) = \EX[\Pi_s^B(q_s) \; | f_s]$. \\
 \\
-Furthermore, we are provided with two other policies which are known to bound the optimal policy. The first is the Myopic policy, which minimizes only the next period. This is known to overestimate the optimal order quantity. The second is the Minimizing policy, which minimizes the sum of the marginal holding and penalty cost. \cite{levi:2007} show that this overestimates the optimal order quantity. \cite{hurley:2007} show that combining these bounds with the balancing policy, as well as other bounds, provides us with lower cost policy while keeping the worst case guarantees.  
+\cite{levi:2007} show that when this $q_s$ is applied, the incurred costs are guaranteed to be twice of the optimal costs. Furthermore, we are provided with two other policies which are known to bound the optimal policy. The first is the Myopic policy, which minimizes only the next period. This is known to overestimate the optimal order quantity. The second is the Minimizing policy, which minimizes the sum of the marginal holding and penalty cost. \cite{levi:2007} show that this overestimates the optimal order quantity. \cite{hurley:2007} show that combining these bounds with the balancing policy, as well as other bounds, provides us with lower cost policy while keeping the worst case guarantees.  
 
 \subsection{Lot Sizing Problem}
 
@@ -97,11 +97,11 @@ The balancing algorithm then seeks the order size $q_s$ such that:
 $$
 	l_s^B(q_s) = \tilde{\pi}(q_s)
 $$
-where $l_s^B(q_s) = \EX[H_s^B(q_s) \; | f_s]$ and $\tilde{\pi}_s^B(q_s) = \EX[\tilde{\Pi}_s^B(q_s) \; | f_s]$. \cite{levi:2008} show that when this $q_s$ is applied, the incurred costs are bounded be two times the optimal costs.
+where $l_s^B(q_s) = \EX[H_s^B(q_s) \; | f_s]$ and $\tilde{\pi}_s^B(q_s) = \EX[\tilde{\Pi}_s^B(q_s) \; | f_s]$. \cite{levi:2008} show that when this $q_s$ is applied, the incurred costs are bounded by two times the optimal costs.
 
 \subsection{Multiechelon Stochastic Inventory Problem}
 
-The final set of models are described by \cite{levi:2016}. The problem requires much notation, so full details will be left to the original paper. This paper shows that solving the multiechelon problems with $n$ stages requires solving $n$ separate balancing policies. These balancing policies are similar to the ones seen above, but with extra holding costs accounted for. 
+The final set of models are described by \cite{levi:2016}. The problem requires the presentation of much notation, so full details will be left to the original paper. This paper shows that solving the multiechelon problems with $n$ stages requires solving $n$ separate balancing policies. These balancing policies are similar to the ones seen above, but with extra holding costs accounted for. For the $n$ stage problem, it is shown that the incurred costs are bounded by twice the optimal costs.
 
 \section{Methods for Computing Balancing Policies}
 
@@ -114,7 +114,7 @@ The final set of models are described by \cite{levi:2016}. The problem requires 
 Computing $l_s^B(q_s)$ in the general case requires the computation of a $T - s$ dimensional integral. Traditional cubature algorithms have exponential complexity in dimensions, making such an integral unreasonable to compute. However, some conditions allow it to be reduced to $T-s$ integrals of fewer dimensions. Letting $\Phi$ be the (generally multivariate) distribution of forecast $f_s$: 
 \begin{alignat*}{1}
 	l_s^B(q_s) &= \EX [H_s^B(q_s) \; | \; f_s] \\
-        &= \EX \bigg\{\sum_{j=s}^T h_j\bigg[q_s - \bigg(\sum_{i=s}^j z_i - X_s\bigg)^+\bigg]^+  \; | \; f_s \bigg\} \\
+        &= \EX \bigg\{\sum_{j=s}^T h_j\bigg[q_s - \bigg(\sum_{i=s}^j D_i - X_s\bigg)^+\bigg]^+  \; | \; f_s \bigg\} \\
 		&= \int_{z_s=0}^{\infty} \int_{z_{(s+1)}=0}^{\infty}\dots \int_{z_T=0}^{\infty}\sum_{j=s}^T h_j\bigg[q_s - \bigg(\sum_{i=s}^j z_i - X_s\bigg)^+\bigg]^+ d\Phi(z_s, z_{s+1}, \dots z_T)
 \end{alignat*}
 Assuming that the demand of any period would depend only on past demand (rather than future demand), this can be rewritten as a series of $1, 2, \dots, T - s$ dimensional integrals: 
@@ -131,9 +131,7 @@ Letting $\psi_{[s,j]}$ be the (possibly uncomputable) distribution function of c
 $l_s^B(q_s)$ is convex increasing with $q_s$. For nonincreasing $h_j$, the series in $l_s^B(q_s)$ is nonincreasing with $j$. This allows the series to be truncated with a bounded error. This is particularly useful for dependent demand distributions, as it allows us to compute the expectation over fewer random variables (often only 1 or 2 if $q_s$ is below or near its optimal value). So long as the bounded error is less than the tolerance of the quadrature algorithm, this approximation will result in trivial error, while allowing faster function evaluations.\\
 \\
 For independent demand, $\psi_{[s,j]} = \phi_s \star \phi_{s+1} \star \dots \star \phi_j$.
-For distributions with closed-form convolutions (Normal, Exponential, etc), this can be evaluated efficiently. For dependent demand, specialized methods are necessary. If the demand distribution follows a multivariate normal (or can be approximated by one), $\psi_{[s,j]} = N(\sum_{i=s}^j \mu_i, \sqrt{\sum_{i=s}^{j} \sum_{k=s}^j \sigma_{i,k}^2})$\footnote{This is not true in general for dependent normal random variables. However, it does hold for multivariate normal random variables.}. For other distributions,  \cite{arbenz:2011} provide an algorithm which has superior convergence to Monte Carlo methods for the relevant number of dimensions.\\
-\\ 
-As an alternative to this entire section, Monte Carlo methods are still quite effective in directly computing $l_s^B(q_s)$, and provide a simple mechanism to integrate forecasting softwares which provide simulated demand paths. The focus here, however, will be on exact solutions. 
+For distributions with closed-form convolutions (Normal, Exponential, etc), this can be evaluated efficiently. For dependent demand, specialized methods are necessary. If the demand distribution follows a multivariate normal (or can be approximated by one), $\psi_{[s,j]} = N(\sum_{i=s}^j \mu_i, \sqrt{\sum_{i=s}^{j} \sum_{k=s}^j \sigma_{i,k}^2})$\footnote{This is not true in general for dependent normal random variables. However, it does hold for multivariate normal random variables.}. For other distributions,  \cite{arbenz:2011} provide an algorithm which has superior convergence to Monte Carlo methods for the relevant number of dimensions.
 
 \subsubsection*{Marginal/Forced Backordering Cost $\tilde{\pi}_s^B(q_s)$}
 
@@ -155,9 +153,9 @@ The balancing policies seek the value $q_s^B$ at which some set of costs are equ
 \end{equation}
 The following will discuss solving equation (5). Adaptations to solve other policies are simple to apply. \\
 \\
-If the conditions to compute $\psi_{[s, j]}$ are met, we can exactly compute the cost functions. If $l_s^B(q_s)$, $\frac{d}{d q_s} l_s^B(q_s)$, $\tilde{\pi}_s^B(q_s)$, and $\frac{d}{d q_s} \tilde{\pi}_s^B(q_s)$ are decreasing with $j$, they can be efficiently computed, with sublinear time complexity in the horizon length.\footnote{No formal proof can be provided, but logically: Assuming the integration is constant per period, computing the entire horizon will be linear with horizon length. If truncated, then there will be some horizon length which, if increased, no further integrations will be required. The only difficulty here is whether each integration is constant. Under the conditions given, this is a trivial formality. Numerical demonstrations will be provided next section.} \\
+If the conditions to compute $\psi_{[s, j]}$ are met, we can exactly compute the cost functions. If $l_s^B(q_s)$, $\frac{d}{d q_s} l_s^B(q_s)$, $\tilde{\pi}_s^B(q_s)$, and $\frac{d}{d q_s} \tilde{\pi}_s^B(q_s)$ are decreasing with $j$, they can be efficiently computed, with sublinear time complexity in the horizon length.\footnote{No formal proof can be provided, but logically: Assuming the integration is constant per period, computing the entire horizon will be linear with horizon length. If truncated, then there will be some horizon length which, if increased, no further integrations will be required. The only difficulty here is whether each integration is constant. Under the conditions given, this tends to hold.} \\
 \\
-\cite{levi:2007} suggests using bisection methods (with linear convergence) to solve this. However, under our current assumptions, superior methods can be used. Because $l_s^B(q_s)$ is convex and increasing and $\tilde{\pi}_s^B(q_s)$ is convex and decreasing, (5) has one root, one basin of attraction, no stationary points, and is continuously differentiable. Given these conditions, Newton-Raphson (with quadratic convergence) is a better choice.\footnote{The distinction of quadratic vs. linear convergence is quite critical for these policies: bisection often requires an order of magnitude more function evaluations than the Newton-Raphson. Furthermore, all but the first Newton-Raphson iteration are "very close" to the optimal value, which, as described in Section 3.1, results in faster function evaluation. The overall effect on runtime is several orders of magnitude.}\\
+\cite{levi:2007} suggests using bisection methods to solve this. However bisection methods have linear convergence, which is quite slow for this problem. Fortunately, under our current assumptions, superior methods can be used. Because $l_s^B(q_s)$ is convex and increasing and $\tilde{\pi}_s^B(q_s)$ is convex and decreasing, (5) has one root, one basin of attraction, no stationary points, and is continuously differentiable. Given these conditions, Newton-Raphson is a better choice. \\
 \\
 Newton-Raphson begins with an initial estimate $x_0$, and then iterates the following equation:
 $$
@@ -170,11 +168,13 @@ $$
 $$
 	f_s^{\prime}(x) =  \frac{d}{dx} l_s^B(x) - \frac{d}{dx} \pi_s^B(x) 
 $$
-The only remaining concern when applying Newton-Raphson is the initial estimate $x_0$. Generally, poor initial estimates can cause subquadratic convergence. These concerns can be ignored with the initial estimate of $x_0 = \mu_s$.
+Newton-Raphson has quadratic convergence, and as result often requires an order of magnitude fewer function evaluations than the bisection. Furthermore, all but the first Newton-Raphson iteration are "very close" to the optimal value, which, as described in Section 3.1, results in faster function evaluation. \\
+\\
+The only remaining concern when applying Newton-Raphson is the initial estimate $x_0$. Generally, poor initial estimates can cause subquadratic convergence. There is no general answer to this problem, but numerical experience has indicated that these concerns can be ignored with the initial estimate of $x_0 = \mu_s$.
 
 \section{Algorithm Implementation}
 
-The scenario studied here is the simplest case, the unconstrainted stochastic inventory problem. The demand forecast is $NID(1000, 300)$ with a penalty cost of $p_j = 5$ for all $j$ and a holding cost of $h_j = 1$ for all $j$. There are 100 periods in the horizon. These particular demand numbers were selected because the high standard deviation causes longer holding cost evaluations. The truncation error, as well as the tolerance for the quadrature and root-finding algorithms was set to $1*10^{-9}$. Such an error should be trivial in the context of inventory control. The initial guess was equal to the one period demand mean, $x_0 = 1000$. No bounding heuristics will be used here - only the balancing policy is applied. \\
+The scenario studied here is the simplest case, the unconstrainted stochastic inventory problem. The demand forecast is $NID(1000, 300)$ with a penalty cost of $p_j = 5$ for all $j$ and a holding cost of $h_j = 1$ for all $j$. There are 100 periods in the horizon. These particular demand numbers were selected because the high standard deviation causes longer holding cost evaluations. The truncation error, as well as the tolerance for the quadrature and root-finding algorithms was set to $1*10^{-9}$. Such an error should be trivial in the context of inventory control. The initial guess was equal to the one period demand mean, $x_0 = 1000$. No bounding heuristics will be used here - only the balancing policy is applied. 
 \begin{figure}
 \includegraphics[width=\textwidth]{root_function_report}
 \caption{Root function for $NID(1000, 300)$ demand forecasts. Optimal $q$ in blue, $\mu$ in green. The function is generally smooth.}
@@ -184,11 +184,7 @@ The scenario studied here is the simplest case, the unconstrainted stochastic in
 \includegraphics[width=\textwidth]{solution_times_report}
 \caption{Solution times plotted for various initial guesses. Optimal $q$ in blue, $\mu$ in green. Although $x_0 = \mu$ is an effective starting point, the running time for any starting point is small.}
 \end{figure}
-
 The root function which Newton-Raphson is applied to, as well as the root found by Newton-Raphson, is plotted in Figure 1. Computing this root required 110 nanoseconds. As discussed in section 3.2.1, the solution time depends upon the quality of the initial guess. However, this relationship is plotted in Figure 2, and shows that differences in solution time are trivial in practice. This plot also confirms that the algorithm converges for a wide range of initial guesses ($x_0 \in \{0, 5000\}$ in this case).
-
-
-
 
 \bibliography{citations}
 \bibliographystyle{plainnat}
